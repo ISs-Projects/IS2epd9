@@ -16,9 +16,9 @@ import java.util.logging.Logger;
  */
 public class Persistencia {
 
-    private static String login = "usuario";
-    private static String password = "clave";
-    private static String url = "jdbc:mysql://localhost/facturacion";
+    private static String login = "root";
+    private static String password = "";
+    private static String url = "jdbc:mysql://localhost:3306/facturacion?zeroDateTimeBehavior=convertToNull&serverTimezone=UTC&useSSL=false";
     private static Connection conn = null;
 
     public static Connection createConnection() {
@@ -29,22 +29,22 @@ public class Persistencia {
                 conn = DriverManager.getConnection(url, login, password);
             } catch (ClassNotFoundException e) {
                 System.out.println(e);
-            } catch (SQLException e) {
-                System.out.println(e);
             } catch (java.lang.InstantiationException e) {
                 System.out.println(e);
             } catch (java.lang.IllegalAccessException e) {
+                System.out.println(e);
+            } catch (SQLException e) {
                 System.out.println(e);
             }
         }
         return conn;
     }
-    
+
     public static void closeConnection() {
         try {
-            if(conn!=null){
+            if (conn != null) {
                 conn.close();
-                conn=null;
+                conn = null;
             }
         } catch (SQLException ex) {
             Logger.getLogger(Persistencia.class.getName()).log(Level.SEVERE, null, ex);

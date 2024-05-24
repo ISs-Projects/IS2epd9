@@ -2,6 +2,9 @@ package vista.factura;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.ComboBoxModel;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -11,11 +14,12 @@ import modelo.entidades.Factura;
  *
  * @author Norberto Díaz-Díaz
  */
-public class FacturaTableModel implements TableModel{
+public class FacturaTableModel implements TableModel, ComboBoxModel{
 
     private List<Factura> facturas = new ArrayList<Factura>();
     private List<TableModelListener> tableListeners = new ArrayList<TableModelListener>();
-
+    private List<ListDataListener> dataListeners = new ArrayList<ListDataListener>();
+    
     public List<Factura> getFacturas() {
         return facturas;
     }
@@ -27,6 +31,7 @@ public class FacturaTableModel implements TableModel{
 
     protected void fireContentsChanged() {
         fireContentsChangedTableModel();
+        fireContentsChangedListData();
     }
     //--------------- MÉTODOS PROPIOS DE TableModel -------------------------
 
@@ -116,4 +121,37 @@ public class FacturaTableModel implements TableModel{
         }
     }
     
+    protected void fireContentsChangedListData() {
+    ListDataEvent e = new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, 0, facturas.size());
+    for (ListDataListener l : dataListeners) {
+        l.contentsChanged(e);
+    }
+}
+     public void addListDataListener(ListDataListener l) {
+        dataListeners.add(l);
+    }
+
+    public void removeListDataListener(ListDataListener l) {
+        dataListeners.remove(l);
+    }
+
+    @Override
+    public void setSelectedItem(Object anItem) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object getSelectedItem() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getSize() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object getElementAt(int index) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
